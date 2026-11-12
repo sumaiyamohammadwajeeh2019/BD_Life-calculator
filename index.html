@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="bn"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>BD Life Calculator PRO - 5in1 + Matchmaking - Developed by SMRR Team, Bangladesh</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:system-ui,Arial;max-width:480px;margin:auto;background:#f1f5f9;padding-bottom:20px}
+.header{background:linear-gradient(135deg,#0f766e,#0f2043);color:#fff;padding:14px;text-align:center;position:sticky;top:0;z-index:100}
+.header h1{font-size:18px}.header p{font-size:11px;opacity:.9;margin-top:4px}
+.topTools{display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+.toolBtn{background:#fff;color:#0f2043;border:0;padding:8px 14px;border-radius:20px;font-weight:800;font-size:12px;cursor:pointer}
+.toolBtn.active{background:#facc15;color:#000}
+.tabs{display:flex;background:#fff;overflow-x:auto;position:sticky;top:110px;z-index:99;box-shadow:0 2px 6px #0002}
+.tab{flex:1;min-width:78px;padding:11px 4px;text-align:center;font-size:11px;font-weight:800;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
+.tab.active{color:#0f766e;border-color:#0f766e;background:#ecfdf5}
+.panel{display:none;padding:12px}.panel.active{display:block}
+.card{background:#fff;border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 2px 10px #0001}
+.card h3{font-size:15px;color:#0f766e;margin-bottom:8px;border-left:4px solid #0f766e;padding-left:8px}
+label{font-size:12px;font-weight:700;color:#333;display:block;margin-top:9px}input,select{width:100%;padding:11px;border:1.5px solid #e2e8f0;border-radius:10px;margin-top:4px;font-size:15px;background:#f8fafc}
+.btn{width:100%;padding:13px;border:0;border-radius:12px;font-weight:800;font-size:15px;cursor:pointer;margin-top:10px;color:#fff}
+.btn-teal{background:#0f766e}.btn-pink{background:#db2777}.btn-blue{background:#1e40af}.btn-gold{background:#b45309}.btn-orange{background:#ea580c}.btn-print{background:#0f2043}.btn-heart{background:#e11d48}
+.result{background:#ecfdf5;border:1.5px dashed #0f766e;padding:12px;border-radius:12px;margin-top:10px;font-size:13px;line-height:1.7}
+.result b{color:#0f2043}.result table{width:100%;font-size:13px}.result td{padding:4px 0;border-bottom:1px solid #ddd}
+.small{font-size:11px;color:#64748b;margin-top:6px}
+.row{display:flex;gap:8px}.row>div{flex:1}
+.share{background:#25D366;color:#fff;border:0;padding:11px;border-radius:10px;width:100%;font-weight:800;margin-top:8px}
+.footer{background:#0f2043;color:#a5f3fc;text-align:center;padding:14px;font-size:11px;line-height:1.6}
+.matchBar{height:18px;background:#e2e8f0;border-radius:20px;overflow:hidden;margin:8px 0}.matchFill{height:100%;background:linear-gradient(90deg,#db2777,#f59e0b);width:0%;transition:width .8s}
+.subTabs{display:flex;gap:6px;margin-bottom:10px}.subTabs button{flex:1;padding:9px;border:1.5px solid #db2777;background:#fff;border-radius:20px;font-weight:800;font-size:12px;cursor:pointer}.subTabs button.active{background:#db2777;color:#fff}
+@media print{body{max-width:100%} .header,.tabs,.topTools,.btn,.share,.footer,.subTabs{display:none!important} .panel{display:block!important} .card{box-shadow:none;border:1px solid #ddd} .printHeader{display:block!important;text-align:center;margin-bottom:10px} }
+.printHeader{display:none}
+</style></head><body>
+<div class="header"><h1 data-lang="title">🇧🇩 BD LIFE CALCULATOR PRO</h1><p data-lang="subtitle">Jomi • Biye • Dokan • Gold • Bari Nirman | 5-in-1 + Matchmaking | Developed by SMRR Team, Bangladesh</p>
+<div class="topTools">
+<button class="toolBtn active" id="btnBN" onclick="setLang('bn')">🇧🇩 বাংলা</button>
+<button class="toolBtn" id="btnEN" onclick="setLang('en')">🇬🇧 English</button>
+<button class="toolBtn" onclick="doPrint()">🖨️ <span data-lang="print">Print</span></button>
+<button class="toolBtn" onclick="shareApp()">📱 <span data-lang="share">Share</span></button>
+</div></div>
+<div class="printHeader"><h2>BD Life Calculator PRO - 5-in-1 + Matchmaking</h2><p>Developed by SMRR Team, Bangladesh | Jomi • Biye • Dokan • Gold • Bari Nirman</p><p id="printDate"></p></div>
+<div class="tabs">
+<div class="tab" onclick="showTab(event,'jomi')" data-lang="tab_jomi">🏡 JOMI</div>
+<div class="tab active" onclick="showTab(event,'biye')" data-lang="tab_biye">💍 BIYE</div>
+<div class="tab" onclick="showTab(event,'dokan')" data-lang="tab_dokan">🏪 DOKAN</div>
+<div class="tab" onclick="showTab(event,'gold')" data-lang="tab_gold">✨ GOLD</div>
+<div class="tab" onclick="showTab(event,'bari')" data-lang="tab_bari">🏗️ BARI</div>
+</div>
+
+<!-- JOMI - SHORT -->
+<div id="jomi" class="panel"><div class="card"><h3 data-lang="jomi_title">🏡 Jomi Converter</h3><label data-lang="jomi_decimal">Jomir Poriman (Decimal)</label><input type="number" id="j_dec" value="10" oninput="calcJomi()"><div class="result" id="j_res"></div><label data-lang="jomi_len">Length (Feet)</label><input type="number" id="j_len" value="60"><label data-lang="jomi_wid">Width (Feet)</label><input type="number" id="j_wid" value="40"><button class="btn btn-teal" onclick="calcJomiPlot()" data-lang="jomi_plot_btn">Plot → Decimal Ber Korun</button><div id="j_plot" class="result"></div></div><div class="card"><h3>💰 Jomi Dam + Govt Fee</h3><label>Total Decimal</label><input type="number" id="j_totalDec" value="10"><label>Dam Per Decimal (Tk)</label><input type="number" id="j_price" value="800000"><button class="btn btn-teal" onclick="calcJomiPrice()">Total Dam + Fee Hisab</button><div id="j_priceRes" class="result"></div><button class="btn btn-print" onclick="doPrint()">🖨️ Print Jomi Hisab</button></div></div>
+
+<!-- BIYE + MATCHMAKING -->
+<div id="biye" class="panel active">
+<div class="subTabs"><button class="active" id="subBudget" onclick="showBiyeSub('budget',this)">💍 <span data-lang="biye_sub1">Budget</span></button><button id="subDen" onclick="showBiyeSub('den',this)">🕌 <span data-lang="biye_sub2">Denmohor</span></button><button id="subMatch" onclick="showBiyeSub('match',this)">❤️ <span data-lang="biye_sub3">Matchmaking</span></button></div>
+
+<!-- BUDGET -->
+<div id="biye_budget">
+<div class="card"><h3 data-lang="biye_title">💍 Biye Budget - Full Cost</h3>
+<div class="row"><div><label data-lang="biye_guest">Mehman (Guest)</label><input type="number" id="b_guest" value="300"></div><div><label data-lang="biye_food">Khawar Per Person (Tk)</label><input type="number" id="b_food" value="600"></div></div>
+<label data-lang="biye_den">Denmohor (Tk)</label><input type="number" id="b_den" value="500000">
+<label data-lang="biye_gold">Gold - Bori</label><input type="number" id="b_goldBori" value="5"><label data-lang="biye_gold_price">Gold Price Per Bori (Tk)</label><input type="number" id="b_goldPrice" value="145000">
+<label data-lang="biye_decor">Decor + Stage (Tk)</label><input type="number" id="b_decor" value="80000">
+<label data-lang="biye_photo">Photographer + Video (Tk)</label><input type="number" id="b_photo" value="50000">
+<label data-lang="biye_hall">Community Center / Hall (Tk)</label><input type="number" id="b_hall" value="100000">
+<label data-lang="biye_dress">Dress - Bor + Kone (Tk)</label><input type="number" id="b_dress" value="80000">
+<button class="btn btn-pink" onclick="calcBiye()" data-lang="biye_btn">Biye Total Khoroch Ber Korun</button><div id="b_res" class="result"></div><button class="share" onclick="shareBiye()">📱 <span data-lang="share_wa">WhatsApp e Share Korun</span></button><button class="btn btn-print" onclick="doPrint()">🖨️ <span data-lang="print">Print</span> Biye Budget</button></div>
+</div>
+
+<!-- DENMOHOR -->
+<div id="biye_den" style="display:none"><div class="card"><h3 data-lang="den_title">🕌 Denmohor Calculator</h3><label data-lang="den_total">Denmohor Total (Tk)</label><input type="number" id="b_den2" value="500000"><label data-lang="den_paid">Nogod Diben (Tk)</label><input type="number" id="b_denPaid" value="100000"><button class="btn btn-pink" onclick="calcDenmohor()" data-lang="den_btn">Baki Denmohor Hisab</button><div id="b_denRes" class="result"></div></div></div>
+
+<!-- MATCHMAKING - NEW -->
+<div id="biye_match" style="display:none">
+<div class="card" style="border:2px solid #db2777"><h3 style="color:#db2777;border-color:#db2777" data-lang="match_title">❤️ Matchmaking - Patro / Patri Compatibility</h3><p class="small" data-lang="match_sub">Halal Matchmaking • 100% Privacy • No Photo Needed • SMRR Team</p>
+<div class="row"><div><label data-lang="match_groom">Patro / Groom Name</label><input id="m_groom" placeholder="e.g. Arif"></div><div><label data-lang="match_bride">Patri / Bride Name</label><input id="m_bride" placeholder="e.g. Fatima"></div></div>
+<div class="row"><div><label data-lang="match_gAge">Groom Age</label><input type="number" id="m_gAge" value="26"></div><div><label data-lang="match_bAge">Bride Age</label><input type="number" id="m_bAge" value="22"></div></div>
+<label data-lang="match_gEdu">Groom Education</label><select id="m_gEdu"><option>MBBS / Doctor</option><option>Engineer</option><option>BCS / Govt Job</option><option>Business</option><option>Teacher</option><option>Abroad / Probashi</option><option>Graduate</option><option>Hafez / Alim</option><option>Other</option></select>
+<label data-lang="match_bEdu">Bride Education</label><select id="m_bEdu"><option>MBBS / Doctor</option><option>Engineer</option><option>Graduate</option><option>Teacher</option><option>Hafeza / Alima</option><option>HSC / College</option><option>Other</option></select>
+<label data-lang="match_deen">Deen / Namaz - Both? (Most Important)</label><select id="m_deen"><option value="100">Both 5 Wakt Namaz + Deen ✓✓</option><option value="80">One Regular, One Trying</option><option value="60">Both Trying / Learning</option><option value="40">Family Religious, Personal Weak</option></select>
+<label data-lang="match_family">Family / Location Match</label><select id="m_family"><option value="100">Same District + Same Mentality</option><option value="85">Same Division, Family Known</option><option value="70">Different Division, Good Family</option><option value="50">Far / Unknown Family</option></select>
+<label data-lang="match_expect">Expectation Match - Denmohor / Lifestyle</label><select id="m_expect"><option value="100">Both Agree - Simple Biye, Low Denmohor</option><option value="85">Almost Agree - Small Discussion Needed</option><option value="65">Some Difference - Need Family Meeting</option><option value="40">Big Difference - Denmohor / Demand</option></select>
+<label data-lang="match_job">Groom Job / Income Stable?</label><select id="m_job"><option value="100">Stable Job / Business - Ready for Biye</option><option value="80">Job / Business - New, Growing</option><option value="60">Student / Job Searching</option></select>
+<button class="btn btn-heart" onclick="calcMatch()" data-lang="match_btn">❤️ Compatibility Check Korun</button>
+<div id="m_res" class="result" style="display:none"></div>
+<div class="matchBar" id="m_bar" style="display:none"><div class="matchFill" id="m_fill"></div></div>
+<button class="share" onclick="shareMatch()" data-lang="match_share">📱 Match Report WhatsApp e Share</button>
+<button class="btn btn-print" onclick="doPrint()">🖨️ <span data-lang="print">Print</span> Match Report</button>
+<p class="small" data-lang="match_note">* Eta guidance hisab, final siddhanto family + Istikhara + direct kotha bole niben. Photo / personal data save hoy na.</p>
+</div>
+<div class="card"><h3 data-lang="match_tips">💡 Biye Age Kotha Bolar Checklist</h3><p style="font-size:13px;line-height:1.7">✅ Denmohor koto? Nogod / Baki?<br>✅ Biyer por kothay thakbe? Dhaka / Desh?<br>✅ Meye chakri / porasuna continue korbe?<br>✅ 5 Wakt Namaz + Deen practice?<br>✅ Family er sathe thaka / alada?</p></div>
+</div>
+</div>
+
+<!-- DOKAN -->
+<div id="dokan" class="panel"><div class="card"><h3>🏪 Dokan Profit Calculator</h3><label>Kinlam (Buy Price Tk)</label><input type="number" id="d_buy" value="80"><label>Bechlam (Sell Price Tk)</label><input type="number" id="d_sell" value="120"><label>Daily Sell - Koyta Piece?</label><input type="number" id="d_qty" value="50"><button class="btn btn-blue" onclick="calcDokan()">Profit Ber Korun</button><div id="d_res" class="result"></div></div><div class="card"><h3>💸 bKash / Nagad Charge</h3><label>Amount (Tk)</label><input type="number" id="d_bkash" value="10000"><select id="d_bkashType"><option value="18.5">bKash Send - 18.5 / 1000</option><option value="14.9">bKash Cash Out App - 14.9 / 1000</option><option value="11.49">Nagad Cash Out - 11.49 / 1000</option></select><button class="btn btn-blue" onclick="calcBkash()">Charge Hisab</button><div id="d_bkashRes" class="result"></div><button class="btn btn-print" onclick="doPrint()">🖨️ Print Dokan Hisab</button></div></div>
+
+<!-- GOLD -->
+<div id="gold" class="panel"><div class="card"><h3>✨ Gold Converter - Bori ↔ Gram</h3><label>Bori</label><input type="number" id="g_bori" value="2" oninput="calcGoldConvert()"><label>Gram</label><input type="number" id="g_gram" value="23.32" oninput="calcGoldConvert2()"><div id="g_convRes" class="result"></div><p class="small">1 Bori = 11.664 Gram = 16 Ana = 96 Roti</p></div><div class="card"><h3>💰 Gold Price - 22k / 21k / 18k</h3><label>Gold Per Bori (Tk) - 22k</label><input type="number" id="g_price22" value="145000"><label>Apnar Gold - Bori</label><input type="number" id="g_myBori" value="3"><label>Carat</label><select id="g_carat"><option value="1">22k - 100%</option><option value="0.954">21k - 95.4%</option><option value="0.818">18k - 81.8%</option></select><label>Mojuri Per Bori (Tk)</label><input type="number" id="g_mojuri" value="5000"><label>VAT %</label><input type="number" id="g_vat" value="5"><button class="btn btn-gold" onclick="calcGoldPrice()">Gold Total Dam Ber Korun</button><div id="g_priceRes" class="result"></div><button class="btn btn-print" onclick="doPrint()">🖨️ Print Gold Hisab</button></div></div>
+
+<!-- BARI -->
+<div id="bari" class="panel"><div class="card"><h3>🏗️ Bari Nirman Cost</h3><label>Total Sqft</label><input type="number" id="br_sqft" value="1500"><label>Floor / Tola</label><input type="number" id="br_floor" value="2"><label>Cost Per Sqft (Tk)</label><select id="br_rate"><option value="1800">Normal - 1800 Tk/sqft</option><option value="2200">Medium - 2200 Tk/sqft</option><option value="2800">Premium - 2800 Tk/sqft</option></select><button class="btn btn-orange" onclick="calcBari()">Bari Total Khoroch Ber Korun</button><div id="br_res" class="result"></div></div><div class="card"><h3>🧱 Material - Cement / Rod / Brick / Bali</h3><label>Sqft</label><input type="number" id="br_mSqft" value="1500"><button class="btn btn-orange" onclick="calcMaterial()">Material List Ber Korun</button><div id="br_matRes" class="result"></div><button class="btn btn-print" onclick="doPrint()">🖨️ Print Bari Hisab</button></div></div>
+
+<div class="footer"><b data-lang="footer1">Developed by SMRR Team • Bangladesh 🇧🇩</b><br><span data-lang="footer2">BD Life Calculator PRO • 5-in-1 + Matchmaking • Jomi Biye Dokan Gold Bari</span><br>© 2026 • Made for Bangladesh • Share with Family & Friends</div>
+<script>
+let curLang='bn';
+const LANG={
+bn:{title:"🇧🇩 BD LIFE CALCULATOR PRO",subtitle:"Jomi • Biye • Dokan • Gold • Bari Nirman | 5-in-1 + Matchmaking | Developed by SMRR Team, Bangladesh",print:"Print",share:"Share",tab_jomi:"🏡 JOMI",tab_biye:"💍 BIYE",tab_dokan:"🏪 DOKAN",tab_gold:"✨ GOLD",tab_bari:"🏗️ BARI",jomi_title:"🏡 Jomi Converter",jomi_decimal:"Jomir Poriman (Decimal)",jomi_len:"Length (Feet)",jomi_wid:"Width (Feet)",jomi_plot_btn:"Plot → Decimal Ber Korun",biye_sub1:"Budget",biye_sub2:"Denmohor",biye_sub3:"Matchmaking",biye_title:"💍 Biye Budget - Full Cost",biye_guest:"Mehman (Guest)",biye_food:"Khawar Per Person (Tk)",biye_den:"Denmohor (Tk)",biye_gold:"Gold - Bori",biye_gold_price:"Gold Price Per Bori (Tk)",biye_decor:"Decor + Stage (Tk)",biye_photo:"Photographer + Video (Tk)",biye_hall:"Community Center / Hall (Tk)",biye_dress:"Dress - Bor + Kone (Tk)",biye_btn:"Biye Total Khoroch Ber Korun",share_wa:"WhatsApp e Share Korun",den_title:"🕌 Denmohor Calculator",den_total:"Denmohor Total (Tk)",den_paid:"Nogod Diben (Tk)",den_btn:"Baki Denmohor Hisab",match_title:"❤️ Matchmaking - Patro / Patri Compatibility",match_sub:"Halal Matchmaking • 100% Privacy • No Photo Needed • SMRR Team",match_groom:"Patro / Groom Name",match_bride:"Patri / Bride Name",match_gAge:"Groom Age",match_bAge:"Bride Age",match_gEdu:"Groom Education",match_bEdu:"Bride Education",match_deen:"Deen / Namaz - Both? (Most Important)",match_family:"Family / Location Match",match_expect:"Expectation Match - Denmohor / Lifestyle",match_job:"Groom Job / Income Stable?",match_btn:"❤️ Compatibility Check Korun",match_share:"📱 Match Report WhatsApp e Share",match_note:"* Eta guidance hisab, final siddhanto family + Istikhara + direct kotha bole niben. Photo / personal data save hoy na.",match_tips:"💡 Biye Age Kotha Bolar Checklist",footer1:"Developed by SMRR Team • Bangladesh 🇧🇩",footer2:"BD Life Calculator PRO • 5-in-1 + Matchmaking • Jomi Biye Dokan Gold Bari"},
+en:{title:"🇧🇩 BD LIFE CALCULATOR PRO",subtitle:"Land • Wedding • Shop • Gold • Building | 5-in-1 + Matchmaking | Developed by SMRR Team, Bangladesh",print:"Print",share:"Share",tab_jomi:"🏡 LAND",tab_biye:"💍 WEDDING",tab_dokan:"🏪 SHOP",tab_gold:"✨ GOLD",tab_bari:"🏗️ BUILDING",jomi_title:"🏡 Land Converter",jomi_decimal:"Land Amount (Decimal)",jomi_len:"Length (Feet)",jomi_wid:"Width (Feet)",jomi_plot_btn:"Calculate Plot → Decimal",biye_sub1:"Budget",biye_sub2:"Mahr",biye_sub3:"Matchmaking",biye_title:"💍 Wedding Budget - Full Cost",biye_guest:"Guests",biye_food:"Food Per Person (Tk)",biye_den:"Denmohor / Mahr (Tk)",biye_gold:"Gold - Bori",biye_gold_price:"Gold Price Per Bori (Tk)",biye_decor:"Decor + Stage (Tk)",biye_photo:"Photographer + Video (Tk)",biye_hall:"Community Center / Hall (Tk)",biye_dress:"Dress - Groom + Bride (Tk)",biye_btn:"Calculate Wedding Total Cost",share_wa:"Share on WhatsApp",den_title:"🕌 Denmohor / Mahr Calculator",den_total:"Denmohor Total (Tk)",den_paid:"Paid in Cash (Tk)",den_btn:"Calculate Remaining Denmohor",match_title:"❤️ Matchmaking - Groom / Bride Compatibility",match_sub:"Halal Matchmaking • 100% Privacy • No Photo Needed • SMRR Team",match_groom:"Groom Name",match_bride:"Bride Name",match_gAge:"Groom Age",match_bAge:"Bride Age",match_gEdu:"Groom Education",match_bEdu:"Bride Education",match_deen:"Deen / Prayer - Both? (Most Important)",match_family:"Family / Location Match",match_expect:"Expectation Match - Mahr / Lifestyle",match_job:"Groom Job / Income Stable?",match_btn:"❤️ Check Compatibility",match_share:"📱 Share Match Report on WhatsApp",match_note:"* This is guidance only. Final decision with family + Istikhara + direct talk. No photo / personal data is saved.",match_tips:"💡 Checklist Before Wedding Talk",footer1:"Developed by SMRR Team • Bangladesh 🇧🇩",footer2:"BD Life Calculator PRO • 5-in-1 + Matchmaking • Land Wedding Shop Gold Building"}
+};
+function setLang(l){curLang=l;document.getElementById('btnBN').classList.toggle('active',l==='bn');document.getElementById('btnEN').classList.toggle('active',l==='en');document.querySelectorAll('[data-lang]').forEach(el=>{let k=el.getAttribute('data-lang');if(LANG[l][k]) el.innerText=LANG[l][k]});localStorage.setItem('smrr_lang',l);calcJomi();calcGoldConvert()}
+function doPrint(){document.getElementById('printDate').innerText='Print Date: '+new Date().toLocaleString()+' | Developed by SMRR Team, Bangladesh | Language: '+(curLang==='bn'?'Bangla':'English');window.print()}
+function shareApp(){window.open(`https://wa.me/?text=${encodeURIComponent('🇧🇩 BD Life Calculator PRO - Jomi Biye Dokan Gold Bari + Matchmaking - Developed by SMRR Team, Bangladesh')}`,'_blank')}
+function showTab(e,id){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active');e.target.classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+function showBiyeSub(which,btn){['budget','den','match'].forEach(x=>document.getElementById('biye_'+x).style.display='none');document.getElementById('biye_'+which).style.display='block';document.querySelectorAll('.subTabs button').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
+function fmt(n){return Math.round(n).toLocaleString('en-IN')}
+function calcJomi(){let d=+document.getElementById('j_dec').value||0;document.getElementById('j_res').innerHTML=`<b>${d} Decimal = ${(d/1.65).toFixed(2)} Katha = ${(d/33).toFixed(3)} Bigha = ${(d/100).toFixed(3)} Acre = ${fmt(d*435.6)} sqft</b>`}
+calcJomi();
+function calcJomiPlot(){let l=+document.getElementById('j_len').value||0,w=+document.getElementById('j_wid').value||0,dec=l*w/435.6;document.getElementById('j_plot').innerHTML=`<b>Plot: ${l} x ${w} = ${fmt(l*w)} sqft = ${dec.toFixed(2)} Decimal</b>`}
+function calcJomiPrice(){let dec=+document.getElementById('j_totalDec').value||0,p=+document.getElementById('j_price').value||0,total=dec*p,all=total*0.07;document.getElementById('j_priceRes').innerHTML=`<b>Land Price: ${fmt(total)} Tk</b><br>Govt Fee (7%): ${fmt(all)} Tk<br><b>Grand Total: ${fmt(total+all)} Tk</b>`}
+function calcBiye(){let guest=+document.getElementById('b_guest').value||0,food=+document.getElementById('b_food').value||0,foodTotal=guest*food,den=+document.getElementById('b_den').value||0,goldTotal=(+document.getElementById('b_goldBori').value||0)*(+document.getElementById('b_goldPrice').value||0),decor=+document.getElementById('b_decor').value||0,photo=+document.getElementById('b_photo').value||0,hall=+document.getElementById('b_hall').value||0,dress=+document.getElementById('b_dress').value||0,total=foodTotal+den+goldTotal+decor+photo+hall+dress;document.getElementById('b_res').innerHTML=`<b>${curLang==='bn'?'Biye Total':'Wedding Total'}: ${fmt(total)} Tk</b><br>Food: ${fmt(foodTotal)} Tk | Denmohor: ${fmt(den)} Tk | Gold: ${fmt(goldTotal)} Tk<br>Per Guest: ${fmt(total/guest)} Tk`;window._biyeTotal=total}
+function calcDenmohor(){let t=+document.getElementById('b_den2').value||0,p=+document.getElementById('b_denPaid').value||0;document.getElementById('b_denRes').innerHTML=`Total: ${fmt(t)} Tk | Paid: ${fmt(p)} Tk | <b>Remaining: ${fmt(t-p)} Tk</b>`}
+function shareBiye(){window.open(`https://wa.me/?text=${encodeURIComponent('💍 Wedding Budget: '+fmt(window._biyeTotal||0)+' Tk - BD Life Calculator PRO - SMRR Team, Bangladesh')}`,'_blank')}
+// MATCHMAKING LOGIC
+let lastMatch={score:0,groom:'',bride:''};
+function calcMatch(){
+let groom=document.getElementById('m_groom').value||'Patro', bride=document.getElementById('m_bride').value||'Patri';
+let gAge=+document.getElementById('m_gAge').value||26, bAge=+document.getElementById('m_bAge').value||22;
+let ageDiff=Math.abs(gAge-bAge);
+let ageScore=ageDiff<=2?100:ageDiff<=4?90:ageDiff<=6?75:ageDiff<=9?60:45;
+let deen=+document.getElementById('m_deen').value, family=+document.getElementById('m_family').value, expect=+document.getElementById('m_expect').value, job=+document.getElementById('m_job').value;
+let gEdu=document.getElementById('m_gEdu').value, bEdu=document.getElementById('m_bEdu').value;
+let eduScore=(gEdu===bEdu)?90:85; // education not main, deen is main
+// Weighted: Deen 35%, Family 20%, Expectation 20%, Age 15%, Job 10%
+let total=Math.round(deen*0.35+family*0.20+expect*0.20+ageScore*0.15+job*0.10);
+let verdict='', advice='', color='';
+if(total>=85){verdict=curLang==='bn'?'🌟 Excellent Match - Alhamdulillah!':'🌟 Excellent Match - Alhamdulillah!'; advice=curLang==='bn'?'Family meeting korun, Istikhara korun, biye agiye nin. Deen + Family + Expectation sob milche.':'Arrange family meeting, do Istikhara, proceed. Deen + Family + Expectation all match.'; color='#16a34a'}
+else if(total>=70){verdict=curLang==='bn'?'✅ Good Match - Kotha Bolun':'✅ Good Match - Talk More'; advice=curLang==='bn'?'Bhalo match. 2-3 ta point e family mile kotha bole clear korun - Denmohor, thaka, chakri.':'Good match. Clear 2-3 points with family - Mahr, living, job.'; color='#0f766e'}
+else if(total>=55){verdict=curLang==='bn'?'⚠️ Medium Match - Aro Kotha Dorkar':'⚠️ Medium Match - Need More Talk'; advice=curLang==='bn'?'Tarahura korben na. Deen / Expectation / Family niye kholakhuli kotha bolun, Istikhara korun.':'Do not rush. Talk openly about Deen / Expectation / Family, do Istikhara.'; color='#ea580c'}
+else{verdict=curLang==='bn'?'❌ Low Match - Bhebe Dekhun':'❌ Low Match - Think Again'; advice=curLang==='bn'?'Boro parthokko ache. Family ke janiye abar vabun, Istikhara korun.':'Big difference. Inform family, think again, do Istikhara.'; color='#dc2626'}
+lastMatch={score:total,groom,bride,verdict};
+document.getElementById('m_res').style.display='block';
+document.getElementById('m_bar').style.display='block';
+document.getElementById('m_fill').style.width=total+'%';
+document.getElementById('m_res').innerHTML=`<b style="font-size:16px;color:${color}">${groom} ❤️ ${bride}</b><br><b style="font-size:22px">${total}% Compatible</b><br><b>${verdict}</b><br><table><tr><td>Deen / Namaz (35%)</td><td><b>${deen}%</b></td></tr><tr><td>Family / Location (20%)</td><td><b>${family}%</b></td></tr><tr><td>Expectation (20%)</td><td><b>${expect}%</b></td></tr><tr><td>Age Match (${gAge} vs ${bAge}, Diff ${ageDiff}y)</td><td><b>${ageScore}%</b></td></tr><tr><td>Job / Income (10%)</td><td><b>${job}%</b></td></tr><tr><td>Education</td><td>${gEdu} / ${bEdu}</td></tr></table><p style="margin-top:6px">${advice}</p><p style="font-size:11px;color:#666">Developed by SMRR Team, Bangladesh • Privacy: Data save hoy na</p>`;
+}
+function shareMatch(){let m=lastMatch;if(!m.score){alert(curLang==='bn'?'Age Compatibility Check korun':'Please Check Compatibility first');return}window.open(`https://wa.me/?text=${encodeURIComponent('❤️ Matchmaking Report - '+m.groom+' + '+m.bride+' = '+m.score+'% Compatible - '+m.verdict+' - BD Life Calculator PRO - Developed by SMRR Team, Bangladesh')}`,'_blank')}
+function calcDokan(){let buy=+document.getElementById('d_buy').value||0,sell=+document.getElementById('d_sell').value||0,qty=+document.getElementById('d_qty').value||0,profit=sell-buy;document.getElementById('d_res').innerHTML=`<b>Per Piece Profit: ${fmt(profit)} Tk (${(profit/buy*100).toFixed(1)}%)</b><br>Daily: <b>${fmt(profit*qty)} Tk</b> | Monthly: <b>${fmt(profit*qty*30)} Tk</b>`}
+function calcBkash(){let amt=+document.getElementById('d_bkash').value||0,rate=+document.getElementById('d_bkashType').value,charge=amt/1000*rate;document.getElementById('d_bkashRes').innerHTML=`Charge: <b>${fmt(charge)} Tk</b> | You Get: <b>${fmt(amt-charge)} Tk</b>`}
+function calcGoldConvert(){let b=+document.getElementById('g_bori').value||0,g=b*11.664;document.getElementById('g_gram').value=g.toFixed(2);document.getElementById('g_convRes').innerHTML=`<b>${b} Bori = ${g.toFixed(2)} Gram = ${(b*16).toFixed(1)} Ana</b>`}
+function calcGoldConvert2(){let g=+document.getElementById('g_gram').value||0,b=g/11.664;document.getElementById('g_bori').value=b.toFixed(2);document.getElementById('g_convRes').innerHTML=`<b>${g} Gram = ${b.toFixed(2)} Bori</b>`}
+calcGoldConvert();
+function calcGoldPrice(){let price22=+document.getElementById('g_price22').value||0,bori=+document.getElementById('g_myBori').value||0,carat=+document.getElementById('g_carat').value,mojuri=+document.getElementById('g_mojuri').value||0,vatP=+document.getElementById('g_vat').value||0,sub=price22*carat*bori+mojuri*bori,vat=sub*vatP/100;document.getElementById('g_priceRes').innerHTML=`<b>Gold Total: ${fmt(sub+vat)} Tk</b> (Gold ${fmt(price22*carat*bori)} + Mojuri ${fmt(mojuri*bori)} + VAT ${fmt(vat)})`}
+function calcBari(){let sq=+document.getElementById('br_sqft').value||0,floor=+document.getElementById('br_floor').value||1,rate=+document.getElementById('br_rate').value,total=sq*floor*rate;document.getElementById('br_res').innerHTML=`<b>Building Total: ${fmt(total)} Tk</b><br>Total Sqft: ${fmt(sq*floor)} | Rate: ${fmt(rate)} Tk/sqft | Per Floor: ${fmt(total/floor)} Tk`}
+function calcMaterial(){let sq=+document.getElementById('br_mSqft').value||0,cement=Math.ceil(sq*0.4),rod=sq*4,brick=sq*5;document.getElementById('br_matRes').innerHTML=`<b>${sq} Sqft:</b><br>Cement: ${fmt(cement)} Bag | Rod: ${fmt(rod)} Kg | Brick: ${fmt(brick)} Pcs`}
+let savedLang=localStorage.getItem('smrr_lang')||'bn';setLang(savedLang);
+</script></body></html>
